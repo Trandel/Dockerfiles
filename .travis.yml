@@ -9,11 +9,10 @@ install:
   # - git clone https://github.com/docker-library/official-images.git ~/official-images
 
 before_script:
-  - test='/';
   - TOKEN=$( curl -sSLd "username=${DOCKER_HUB_USERNAME}&password=${DOCKER_HUB_PASSWORD}" https://hub.docker.com/v2/users/login | jq -r '.token' )
   - NEW_TAG=$( curl -fsSL 'http://api.wordpress.org/core/version-check/1.7/' | jq -r '.offers[0].current' )
   - SHA1=$( curl -fsSL "https://wordpress.org/wordpress-${NEW_TAG}.tar.gz.sha1" )
-  - CURRENT_TAG=$( curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USERNAME}/${DOCKER_REPO}/tags/latest/" | jq -r '.name' )
+  - CURRENT_TAG=$( curl -sH "Authorization: JWT ${TOKEN}" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USERNAME}/${DOCKER_REPO}/tags/latest/" | jq -r '.name' )
 
 script:
   - if [ $NEW_TAG = $CURRENT_TAG ]; then
