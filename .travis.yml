@@ -16,12 +16,11 @@ before_script:
   - CURRENT_TAG=$(curl -sH "Authorization: JWT $TOKEN" "https://hub.docker.com/v2/repositories/${DOCKER_HUB_USERNAME}/${DOCKER_REPO}/tags/latest/" | jq -r ".name")
 
 script:
-  - >
-  if [ $NEW_TAG = $CURRENT_TAG ]; then
-    echo "Nothing new to build"
-  else
-    echo "Start building new image"
-  fi
+  - if [ $NEW_TAG = $CURRENT_TAG ]; then
+      echo "Nothing new to build";
+    else
+      echo "Start building new image";
+    fi
   # - travis_retry docker build -t "$image" .
 
 after_script:
