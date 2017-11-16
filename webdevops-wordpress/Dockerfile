@@ -12,4 +12,4 @@ RUN set -ex; \
 	rm wordpress.tar.gz; \
 	mv /app/wordpress/* /app/; \
 	rm -rf  /app/wordpress/; \
-	chown -R www-data: /app/*
+	chown -R application: /app/*
