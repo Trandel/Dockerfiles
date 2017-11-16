@@ -1,4 +1,4 @@
-FROM webdevops/php-nginx:ubuntu-16.04
+FROM webdevops/php-nginx:alpine
 
 ARG WORDPRESS_VERSION
 ENV WORDPRESS_VERSION ${WORDPRESS_VERSION:-4.8}
