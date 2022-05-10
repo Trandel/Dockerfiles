@@ -4,8 +4,8 @@ services: docker
 env:
   - DOCKER_REPO=webdevops-wordpress
 
-install:
-  - ls
+# install:
+#   - ls
   # - git clone https://github.com/docker-library/official-images.git ~/official-images
 
 before_script:
@@ -13,6 +13,7 @@ before_script:
   - NEW_TAG=$( curl -fsSL 'http://api.wordpress.org/core/version-check/1.7/' | jq -r '.offers[0].current' )
   - SHA1=$( curl -fsSL "https://wordpress.org/wordpress-${NEW_TAG}.tar.gz.sha1" )
   - "CURRENT_TAG=$( curl -sH \"Authorization: JWT ${TOKEN}\" \"https://hub.docker.com/v2/repositories/${DOCKER_HUB_USERNAME}/${DOCKER_REPO}/tags/${NEW_TAG}/\" | jq -r '.name' )"
+  - echo "new tag: ${NEW_TAG}, current tag: ${CURRENT_TAG}"
 
 script:
   - if [ $NEW_TAG = $CURRENT_TAG ]; then
