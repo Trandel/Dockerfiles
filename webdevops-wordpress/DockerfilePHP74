@@ -1,0 +1,19 @@
+FROM webdevops/php-nginx:7.4-alpine
+
+ARG WORDPRESS_VERSION
+ENV WORDPRESS_VERSION ${WORDPRESS_VERSION:-5.9.3}
+ARG WORDPRESS_SHA1
+ENV WORDPRESS_SHA1 ${WORDPRESS_SHA1:-cab576e112c45806c474b3cbe0d1263a2a879adf}
+
+RUN set -ex; \
+	apk-install php7-redis; \
+	curl -o wordpress.tar.gz -fSL "https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz"; \
+	echo "$WORDPRESS_SHA1 *wordpress.tar.gz" | sha1sum -c -; \
+	tar -xzf wordpress.tar.gz -C /app/; \
+	rm wordpress.tar.gz; \
+	mv /app/wordpress/* /app/; \
+	rm -rf  /app/wordpress/; \
+  curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar; \
+  chmod +x wp-cli.phar; \
+  mv wp-cli.phar /usr/local/bin/wp; \
+	chown -R application: /app/*

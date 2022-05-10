@@ -38,4 +38,9 @@ jobs:
           docker push "${{secrets.DOCKER_HUB_USERNAME}}/${DOCKER_REPO}:latest";
           docker tag "${{secrets.DOCKER_HUB_USERNAME}}/${DOCKER_REPO}:latest" "${{secrets.DOCKER_HUB_USERNAME}}/${DOCKER_REPO}:${NEW_TAG}";
           docker push "${{secrets.DOCKER_HUB_USERNAME}}/${DOCKER_REPO}:${NEW_TAG}";
+          echo "build php 7.4 version"
+          docker build --build-arg WORDPRESS_VERSION="${NEW_TAG}" --build-arg WORDPRESS_SHA1="${SHA1}" -t "${DOCKER_REPO}-74" -f DockerfilePHP74 . ;
+          echo "Push new image with tags";
+          docker tag "${DOCKER_REPO}-74" "${{secrets.DOCKER_HUB_USERNAME}}/${DOCKER_REPO}:php74-${NEW_TAG}";
+          docker push "${{secrets.DOCKER_HUB_USERNAME}}/${DOCKER_REPO}:php74-${NEW_TAG}";
         fi
